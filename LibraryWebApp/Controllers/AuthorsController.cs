@@ -64,7 +64,7 @@ namespace LibraryWebApp.Controllers
             return View(author);
         }
 
-        // POST: Authors/Edit/5
+        // POST: Authors/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Country")] Author author)
@@ -73,17 +73,8 @@ namespace LibraryWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(author);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _context.Authors.AnyAsync(e => e.Id == author.Id))
-                        return NotFound();
-                    throw;
-                }
+                _context.Update(author);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(author);

@@ -56,7 +56,7 @@ namespace LibraryWebApp.Controllers
         {
             review.ReviewDate = DateTime.Now;
 
-            // Проверка на повторный отзыв
+            // Простая проверка на повторный отзыв
             var exists = await _context.Reviews
                 .AnyAsync(r => r.BookId == review.BookId && r.ReaderId == review.ReaderId);
 
@@ -77,7 +77,7 @@ namespace LibraryWebApp.Controllers
             return View(review);
         }
 
-        // GET: Reviews/Edit/5
+        // GET: Reviews/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -99,17 +99,8 @@ namespace LibraryWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(review);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _context.Reviews.AnyAsync(e => e.Id == review.Id))
-                        return NotFound();
-                    throw;
-                }
+                _context.Update(review);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 

@@ -76,7 +76,7 @@ namespace LibraryWebApp.Controllers
             return View(book);
         }
 
-        // POST: Books/Edit/5
+        // POST: Books/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,PublicationYear,AuthorId")] Book book)
@@ -85,17 +85,8 @@ namespace LibraryWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _context.Books.AnyAsync(e => e.Id == book.Id))
-                        return NotFound();
-                    throw;
-                }
+                _context.Update(book);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             await FillAuthorsDropDown(book.AuthorId);

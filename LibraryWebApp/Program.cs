@@ -1,35 +1,40 @@
 using Microsoft.EntityFrameworkCore;
 using LibraryWebApp.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); //web ASP.NET init
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(); //for controllers
 
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite("Data Source=library.db"));
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 // Создание базы данных при запуске
-using (var scope = app.Services.CreateScope())
+/*
+var scope = app.Services.CreateScope();
+try
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<LibraryContext>();
     dbContext.Database.EnsureCreated();
+}
+finally
+{
+    if (scope != null)
+        scope.Dispose(); 
+}*/
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<LibraryContext>();
+    dbContext.Database.EnsureCreated(); //бд если нет бд
 }
 
 app.Run();

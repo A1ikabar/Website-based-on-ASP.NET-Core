@@ -52,12 +52,12 @@ namespace LibraryWebApp.Controllers
         // POST: Borrowings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReaderId,BookId,BorrowedAt,ReturnedAt")] Borrowing borrowing)
+        public async Task<IActionResult> Create([Bind("ReaderId,BookId,BorrowedAt")] Borrowing borrowing)
         {
             if (borrowing.BorrowedAt == default)
                 borrowing.BorrowedAt = DateTime.Now;
 
-            // Проверка на уже существующую активную выдачу
+            // Простая проверка на уже существующую выдачу
             var exists = await _context.Borrowings
                 .AnyAsync(b => b.BookId == borrowing.BookId && b.ReturnedAt == null);
 
@@ -93,7 +93,7 @@ namespace LibraryWebApp.Controllers
             return View(borrowing);
         }
 
-        // POST: Borrowings/Edit/5
+        // POST: Borrowings/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int readerId, int bookId, [Bind("ReaderId,BookId,BorrowedAt,ReturnedAt")] Borrowing borrowing)
@@ -103,23 +103,45 @@ namespace LibraryWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(borrowing);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _context.Borrowings.AnyAsync(b => b.ReaderId == borrowing.ReaderId && b.BookId == borrowing.BookId))
-                        return NotFound();
-                    throw;
-                }
+                _context.Update(borrowing);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             await FillReadersDropDown(borrowing.ReaderId);
             await FillBooksDropDown(borrowing.BookId);
             return View(borrowing);
+        }
+
+        // GET: Borrowings/Return/5
+        public async Task<IActionResult> Return(int? readerId, int? bookId)
+        {
+            if (readerId == null || bookId == null) return NotFound();
+
+            var borrowing = await _context.Borrowings
+                .Include(b => b.Reader)
+                .Include(b => b.Book)
+                .FirstOrDefaultAsync(b => b.ReaderId == readerId && b.BookId == bookId && b.ReturnedAt == null);
+
+            if (borrowing == null) return NotFound();
+            return View(borrowing);
+        }
+
+        // POST: Borrowings/Return/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReturnConfirmed(int readerId, int bookId)
+        {
+            var borrowing = await _context.Borrowings
+                .FindAsync(readerId, bookId);
+
+            if (borrowing != null)
+            {
+                borrowing.ReturnedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Borrowings/Delete/5
@@ -148,37 +170,6 @@ namespace LibraryWebApp.Controllers
             if (borrowing != null)
             {
                 _context.Borrowings.Remove(borrowing);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: Borrowings/Return/5
-        public async Task<IActionResult> Return(int? readerId, int? bookId)
-        {
-            if (readerId == null || bookId == null) return NotFound();
-
-            var borrowing = await _context.Borrowings
-                .Include(b => b.Reader)
-                .Include(b => b.Book)
-                .FirstOrDefaultAsync(b => b.ReaderId == readerId && b.BookId == bookId && b.ReturnedAt == null);
-
-            if (borrowing == null) return NotFound();
-            return View(borrowing);
-        }
-
-        // POST: Borrowings/Return/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReturnConfirmed(int readerId, int bookId)
-        {
-            var borrowing = await _context.Borrowings
-                .FindAsync(readerId, bookId);
-
-            if (borrowing != null)
-            {
-                borrowing.ReturnedAt = DateTime.Now;
                 await _context.SaveChangesAsync();
             }
 

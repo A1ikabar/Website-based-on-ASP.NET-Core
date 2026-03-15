@@ -50,22 +50,6 @@ namespace LibraryWebApp.Data
                 .HasForeignKey(r => r.ReaderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Seed данные (опционально)
-            modelBuilder.Entity<Author>().HasData(
-                new Author { Id = 1, FullName = "George Orwell", Country = "United Kingdom" },
-                new Author { Id = 2, FullName = "Stephen King", Country = "USA" }
-            );
-
-            modelBuilder.Entity<Book>().HasData(
-                new Book { Id = 1, Title = "1984", Genre = BookGenre.Fiction, PublicationYear = 1949, AuthorId = 1 },
-                new Book { Id = 2, Title = "The Shining", Genre = BookGenre.Thriller, PublicationYear = 1977, AuthorId = 2 }
-            );
-
-            modelBuilder.Entity<Reader>().HasData(
-                new Reader { Id = 1, FullName = "Alexey Petrov", LibraryCardNumber = "LIB-001", PhoneNumber = "+7 (123) 456-78-90" },
-                new Reader { Id = 2, FullName = "Maria Ivanova", LibraryCardNumber = "LIB-002", PhoneNumber = "+7 (234) 567-89-01" }
-            );
-
             base.OnModelCreating(modelBuilder);
         }
     }

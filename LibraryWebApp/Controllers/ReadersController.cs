@@ -67,7 +67,7 @@ namespace LibraryWebApp.Controllers
             return View(reader);
         }
 
-        // POST: Readers/Edit/5
+        // POST: Readers/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,LibraryCardNumber,PhoneNumber")] Reader reader)
@@ -76,17 +76,8 @@ namespace LibraryWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(reader);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _context.Readers.AnyAsync(e => e.Id == reader.Id))
-                        return NotFound();
-                    throw;
-                }
+                _context.Update(reader);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(reader);
