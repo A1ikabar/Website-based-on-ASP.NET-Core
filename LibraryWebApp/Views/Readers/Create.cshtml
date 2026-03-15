@@ -1,0 +1,30 @@
+﻿@model LibraryWebApp.Models.Reader
+
+@{
+    ViewData["Title"] = "Create Reader";
+}
+
+<h2>Create Reader</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LibraryCardNumber" class="form-label"></label>
+        <input asp-for="LibraryCardNumber" class="form-control" />
+        <span asp-validation-for="LibraryCardNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

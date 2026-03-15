@@ -1,0 +1,40 @@
+﻿@model LibraryWebApp.Models.Review
+
+@{
+    ViewData["Title"] = "Create Review";
+}
+
+<h2>Create Review</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="BookId" class="form-label">Book</label>
+        <select asp-for="BookId" asp-items="ViewBag.BookId" class="form-select">
+            <option value="">-- Select Book --</option>
+        </select>
+        <span asp-validation-for="BookId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ReaderId" class="form-label">Reader</label>
+        <select asp-for="ReaderId" asp-items="ViewBag.ReaderId" class="form-select">
+            <option value="">-- Select Reader --</option>
+        </select>
+        <span asp-validation-for="ReaderId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Rating" class="form-label">Rating (1-5)</label>
+        <input asp-for="Rating" class="form-control" type="number" min="1" max="5" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Comment" class="form-label">Comment</label>
+        <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Comment" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

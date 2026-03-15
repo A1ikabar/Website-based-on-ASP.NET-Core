@@ -1,0 +1,42 @@
+﻿@model LibraryWebApp.Models.Book
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h2>Edit Book</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AuthorId" class="form-label">Author</label>
+        <select asp-for="AuthorId" asp-items="ViewBag.AuthorId" class="form-select">
+            <option value="">-- Select Author --</option>
+        </select>
+        <span asp-validation-for="AuthorId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Genre" class="form-label">Genre</label>
+        <select asp-for="Genre" asp-items="Html.GetEnumSelectList<BookGenre>()" class="form-select">
+            <option value="">-- Select Genre --</option>
+        </select>
+        <span asp-validation-for="Genre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PublicationYear" class="form-label">Publication Year</label>
+        <input asp-for="PublicationYear" class="form-control" />
+        <span asp-validation-for="PublicationYear" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

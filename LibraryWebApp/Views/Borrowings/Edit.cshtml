@@ -1,0 +1,37 @@
+﻿@model LibraryWebApp.Models.Borrowing
+
+@{
+    ViewData["Title"] = "Edit Borrowing";
+}
+
+<h2>Edit Borrowing</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="ReaderId" />
+    <input type="hidden" asp-for="BookId" />
+
+    <div class="mb-3">
+        <label class="form-label">Reader</label>
+        <input class="form-control" value="@(Model.Reader?.FullName ?? "—")" readonly disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Book</label>
+        <input class="form-control" value="@(Model.Book?.Title ?? "—")" readonly disabled />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BorrowedAt" class="form-label">Borrowed Date</label>
+        <input asp-for="BorrowedAt" class="form-control" type="date" />
+        <span asp-validation-for="BorrowedAt" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ReturnedAt" class="form-label">Returned Date</label>
+        <input asp-for="ReturnedAt" class="form-control" type="date" />
+        <span asp-validation-for="ReturnedAt" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

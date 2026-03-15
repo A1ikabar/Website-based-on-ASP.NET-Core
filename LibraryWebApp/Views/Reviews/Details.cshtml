@@ -1,0 +1,32 @@
+﻿@model LibraryWebApp.Models.Review
+
+@{
+    ViewData["Title"] = "Review Details";
+}
+
+<h2>Review Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Book</dt>
+    <dd class="col-sm-10">@(Model.Book?.Title ?? "—")</dd>
+
+    <dt class="col-sm-2">Book Author</dt>
+    <dd class="col-sm-10">@(Model.Book?.Author?.FullName ?? "—")</dd>
+
+    <dt class="col-sm-2">Reader</dt>
+    <dd class="col-sm-10">@(Model.Reader?.FullName ?? "—")</dd>
+
+    <dt class="col-sm-2">Rating</dt>
+    <dd class="col-sm-10">@Model.Rating ★</dd>
+
+    <dt class="col-sm-2">Review Date</dt>
+    <dd class="col-sm-10">@Model.ReviewDate.ToShortDateString()</dd>
+
+    <dt class="col-sm-2">Comment</dt>
+    <dd class="col-sm-10">@(Model.Comment ?? "No comment provided")</dd>
+</dl>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</p>

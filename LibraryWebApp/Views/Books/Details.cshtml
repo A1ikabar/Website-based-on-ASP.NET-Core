@@ -1,0 +1,73 @@
+﻿@model LibraryWebApp.Models.Book
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+<h2>Book Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Title</dt>
+    <dd class="col-sm-10">@Model.Title</dd>
+
+    <dt class="col-sm-2">Author</dt>
+    <dd class="col-sm-10">@(Model.Author?.FullName ?? "—")</dd>
+
+    <dt class="col-sm-2">Genre</dt>
+    <dd class="col-sm-10">@Model.Genre</dd>
+
+    <dt class="col-sm-2">Publication Year</dt>
+    <dd class="col-sm-10">@Model.PublicationYear</dd>
+
+    <dt class="col-sm-2">Status</dt>
+    <dd class="col-sm-10">
+        @{
+            var isBorrowed = Model.Borrowings?.Any(b => b.ReturnedAt == null) ?? false;
+            if (isBorrowed)
+            {
+                var currentBorrowing = Model.Borrowings?.FirstOrDefault(b => b.ReturnedAt == null);
+                <span class="text-warning">Currently borrowed by @(currentBorrowing?.Reader?.FullName ?? "someone") since @(currentBorrowing?.BorrowedAt.ToShortDateString())</span>
+            }
+            else
+            {
+                <span class="text-success">Available</span>
+            }
+        }
+    </dd>
+</dl>
+
+<h4 class="mt-4">Reviews</h4>
+
+@if (Model.Reviews != null && Model.Reviews.Any())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Reader</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model.Reviews)
+            {
+                <tr>
+                    <td>@(review.Reader?.FullName ?? "—")</td>
+                    <td>@review.Rating ★</td>
+                    <td>@(review.Comment ?? "—")</td>
+                    <td>@review.ReviewDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No reviews yet.</p>
+}
+
+<p class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</p>

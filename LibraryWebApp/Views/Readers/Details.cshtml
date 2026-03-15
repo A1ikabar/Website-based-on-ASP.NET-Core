@@ -1,0 +1,23 @@
+﻿@model LibraryWebApp.Models.Reader
+
+@{
+    ViewData["Title"] = "Reader Details";
+}
+
+<h2>Reader Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Full Name</dt>
+    <dd class="col-sm-10">@Model.FullName</dd>
+
+    <dt class="col-sm-2">Library Card</dt>
+    <dd class="col-sm-10">@Model.LibraryCardNumber</dd>
+
+    <dt class="col-sm-2">Phone</dt>
+    <dd class="col-sm-10">@Model.PhoneNumber</dd>
+</dl>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</p>

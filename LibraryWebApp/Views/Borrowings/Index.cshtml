@@ -1,0 +1,54 @@
+﻿@model IEnumerable<LibraryWebApp.Models.Borrowing>
+
+@{
+    ViewData["Title"] = "Borrowings";
+}
+
+<h2>Borrowings</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Reader</th>
+            <th>Book</th>
+            <th>Borrowed</th>
+            <th>Returned</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Reader?.FullName</td>
+                <td>@item.Book?.Title</td>
+                <td>@item.BorrowedAt.ToShortDateString()</td>
+                <td>@(item.ReturnedAt?.ToShortDateString() ?? "-")</td>
+                <td>
+                    @if (item.ReturnedAt == null)
+                    {
+                        <span class="text-warning">Active</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">Returned</span>
+                    }
+                </td>
+                <td>
+                    @if (item.ReturnedAt == null)
+                    {
+                        <a asp-action="Return" asp-route-readerId="@item.ReaderId" asp-route-bookId="@item.BookId">Return</a> <text>|</text>
+                    }
+                    <a asp-action="Details" asp-route-readerId="@item.ReaderId" asp-route-bookId="@item.BookId">Details</a> |
+                    <a asp-action="Edit" asp-route-readerId="@item.ReaderId" asp-route-bookId="@item.BookId">Edit</a> |
+                    <a asp-action="Delete" asp-route-readerId="@item.ReaderId" asp-route-bookId="@item.BookId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

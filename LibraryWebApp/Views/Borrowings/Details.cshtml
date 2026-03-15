@@ -1,0 +1,48 @@
+﻿@model LibraryWebApp.Models.Borrowing
+
+@{
+    ViewData["Title"] = "Borrowing Details";
+}
+
+<h2>Borrowing Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Reader</dt>
+    <dd class="col-sm-10">@(Model.Reader?.FullName ?? "—")</dd>
+
+    <dt class="col-sm-2">Library Card</dt>
+    <dd class="col-sm-10">@(Model.Reader?.LibraryCardNumber ?? "—")</dd>
+
+    <dt class="col-sm-2">Book</dt>
+    <dd class="col-sm-10">@(Model.Book?.Title ?? "—")</dd>
+
+    <dt class="col-sm-2">Author</dt>
+    <dd class="col-sm-10">@(Model.Book?.Author?.FullName ?? "—")</dd>
+
+    <dt class="col-sm-2">Borrowed Date</dt>
+    <dd class="col-sm-10">@Model.BorrowedAt.ToShortDateString()</dd>
+
+    <dt class="col-sm-2">Returned Date</dt>
+    <dd class="col-sm-10">@(Model.ReturnedAt?.ToShortDateString() ?? "Not returned yet")</dd>
+
+    <dt class="col-sm-2">Status</dt>
+    <dd class="col-sm-10">
+        @if (Model.ReturnedAt == null)
+        {
+            <span class="text-warning">Active</span>
+        }
+        else
+        {
+            <span class="text-success">Returned</span>
+        }
+    </dd>
+</dl>
+
+<p>
+    @if (Model.ReturnedAt == null)
+    {
+        <a asp-action="Return" asp-route-readerId="@Model.ReaderId" asp-route-bookId="@Model.BookId" class="btn btn-warning">Return Book</a>
+    }
+    <a asp-action="Edit" asp-route-readerId="@Model.ReaderId" asp-route-bookId="@Model.BookId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</p>
