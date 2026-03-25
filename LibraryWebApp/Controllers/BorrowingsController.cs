@@ -26,7 +26,7 @@ namespace LibraryWebApp.Controllers
             return View(borrowings);
         }
 
-        // GET: Borrowings/Details/5
+        // GET: Borrowings/Details
         public async Task<IActionResult> Details(int? readerId, int? bookId)
         {
             if (readerId == null || bookId == null) return NotFound();
@@ -51,7 +51,6 @@ namespace LibraryWebApp.Controllers
 
         // POST: Borrowings/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReaderId,BookId,BorrowedAt")] Borrowing borrowing)
         {
             if (borrowing.BorrowedAt == default)
@@ -78,7 +77,7 @@ namespace LibraryWebApp.Controllers
             return View(borrowing);
         }
 
-        // GET: Borrowings/Edit/5
+        // GET: Borrowings/Edit/
         public async Task<IActionResult> Edit(int? readerId, int? bookId)
         {
             if (readerId == null || bookId == null) return NotFound();
@@ -93,9 +92,8 @@ namespace LibraryWebApp.Controllers
             return View(borrowing);
         }
 
-        // POST: Borrowings/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
+        // POST: Borrowings/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int readerId, int bookId, [Bind("ReaderId,BookId,BorrowedAt,ReturnedAt")] Borrowing borrowing)
         {
             if (readerId != borrowing.ReaderId || bookId != borrowing.BookId)
@@ -113,7 +111,7 @@ namespace LibraryWebApp.Controllers
             return View(borrowing);
         }
 
-        // GET: Borrowings/Return/5
+        // GET: Borrowings/Return
         public async Task<IActionResult> Return(int? readerId, int? bookId)
         {
             if (readerId == null || bookId == null) return NotFound();
@@ -127,9 +125,8 @@ namespace LibraryWebApp.Controllers
             return View(borrowing);
         }
 
-        // POST: Borrowings/Return/5
+        // POST: Borrowings/Return
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReturnConfirmed(int readerId, int bookId)
         {
             var borrowing = await _context.Borrowings
@@ -144,7 +141,7 @@ namespace LibraryWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Borrowings/Delete/5
+        // GET: Borrowings/Delete
         public async Task<IActionResult> Delete(int? readerId, int? bookId)
         {
             if (readerId == null || bookId == null) return NotFound();
@@ -159,9 +156,8 @@ namespace LibraryWebApp.Controllers
             return View(borrowing);
         }
 
-        // POST: Borrowings/Delete/5
+        // POST: Borrowings/Delete
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int readerId, int bookId)
         {
             var borrowing = await _context.Borrowings

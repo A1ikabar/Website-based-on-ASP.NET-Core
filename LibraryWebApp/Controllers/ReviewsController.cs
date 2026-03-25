@@ -26,7 +26,7 @@ namespace LibraryWebApp.Controllers
             return View(reviews);
         }
 
-        // GET: Reviews/Details/5
+        // GET: Reviews/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -51,12 +51,10 @@ namespace LibraryWebApp.Controllers
 
         // POST: Reviews/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookId,ReaderId,Rating,Comment")] Review review)
         {
             review.ReviewDate = DateTime.Now;
 
-            // Простая проверка на повторный отзыв
             var exists = await _context.Reviews
                 .AnyAsync(r => r.BookId == review.BookId && r.ReaderId == review.ReaderId);
 
@@ -77,7 +75,7 @@ namespace LibraryWebApp.Controllers
             return View(review);
         }
 
-        // GET: Reviews/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
+        // GET: Reviews/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -90,9 +88,8 @@ namespace LibraryWebApp.Controllers
             return View(review);
         }
 
-        // POST: Reviews/Edit/5
+        // POST: Reviews/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BookId,ReaderId,Rating,Comment,ReviewDate")] Review review)
         {
             if (id != review.Id) return NotFound();
@@ -126,7 +123,6 @@ namespace LibraryWebApp.Controllers
 
         // POST: Reviews/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var review = await _context.Reviews.FindAsync(id);

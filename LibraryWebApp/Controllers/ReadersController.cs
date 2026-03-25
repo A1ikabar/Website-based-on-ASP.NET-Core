@@ -20,7 +20,7 @@ namespace LibraryWebApp.Controllers
             return View(await _context.Readers.AsNoTracking().ToListAsync());
         }
 
-        // GET: Readers/Details/5
+        // GET: Readers/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -45,7 +45,6 @@ namespace LibraryWebApp.Controllers
 
         // POST: Readers/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FullName,LibraryCardNumber,PhoneNumber")] Reader reader)
         {
             if (ModelState.IsValid)
@@ -57,7 +56,7 @@ namespace LibraryWebApp.Controllers
             return View(reader);
         }
 
-        // GET: Readers/Edit/5
+        // GET: Readers/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -67,9 +66,8 @@ namespace LibraryWebApp.Controllers
             return View(reader);
         }
 
-        // POST: Readers/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
+        // POST: Readers/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,LibraryCardNumber,PhoneNumber")] Reader reader)
         {
             if (id != reader.Id) return NotFound();
@@ -83,7 +81,7 @@ namespace LibraryWebApp.Controllers
             return View(reader);
         }
 
-        // GET: Readers/Delete/5
+        // GET: Readers/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -96,9 +94,8 @@ namespace LibraryWebApp.Controllers
             return View(reader);
         }
 
-        // POST: Readers/Delete/5
+        // POST: Readers/Delete
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reader = await _context.Readers.FindAsync(id);

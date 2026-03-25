@@ -20,7 +20,7 @@ namespace LibraryWebApp.Controllers
             return View(await _context.Authors.AsNoTracking().ToListAsync());
         }
 
-        // GET: Authors/Details/5
+        // GET: Authors/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -54,7 +54,7 @@ namespace LibraryWebApp.Controllers
             return View(author);
         }
 
-        // GET: Authors/Edit/5
+        // GET: Authors/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -64,9 +64,8 @@ namespace LibraryWebApp.Controllers
             return View(author);
         }
 
-        // POST: Authors/Edit/5 - УПРОЩЕННАЯ ВЕРСИЯ!
+        // POST: Authors/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Country")] Author author)
         {
             if (id != author.Id) return NotFound();
@@ -80,7 +79,7 @@ namespace LibraryWebApp.Controllers
             return View(author);
         }
 
-        // GET: Authors/Delete/5
+        // GET: Authors/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -93,9 +92,8 @@ namespace LibraryWebApp.Controllers
             return View(author);
         }
 
-        // POST: Authors/Delete/5
+        // POST: Authors/Delete
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var author = await _context.Authors.FindAsync(id);

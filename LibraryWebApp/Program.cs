@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using LibraryWebApp.Data;
 
-var builder = WebApplication.CreateBuilder(args); //web ASP.NET init
+var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews(); //for controllers
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite("Data Source=library.db"));
